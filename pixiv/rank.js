@@ -30,7 +30,7 @@ module.exports = function(){
                     idArray.push(aArray[i].attribs.href.match(/illust_id=\d+/)[0].slice(10));
                 }
                 console.log(idArray.length + ' images start download...');
-                getImage.fromId(idArray);
+                getImage.check(idArray);
             }
             else{
                 console.log('getting list error:' + response.statusCode + ' error');

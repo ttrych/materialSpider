@@ -17,4 +17,12 @@ switch (config.type){
                 break;
         }
         break;
+    case 'photography':
+//        var ui = require('./photography/ui.js');
+//        ui();
+        break;
+    case 'classify':
+        var classify = require('./classify/classify.js');
+        classify();
+        break;
 }

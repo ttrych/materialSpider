@@ -42,8 +42,9 @@ module.exports = function(){
                     getImageId(nowPage)
                 }
                 else{
+                    console.log('tag:' + config.tag + ' page:' + config.startPage + '~' + config.endPage);
                     console.log(idArray.length + ' images start download...');
-                    getImage.fromId(idArray);
+                    getImage.check(idArray);
                 }
             }
             else{

@@ -5,6 +5,20 @@ var fs = require('fs');
 
 var cookie = config.cookie;
 
+function check(idArr){
+    var pathFiles;
+    fs.readdir(config.path,function(err,files){
+        pathFiles = idArr.filter(function(id){
+            return !files.filter(function(filesname){
+                return filesname.match(id + '_')
+            })[0];
+        });
+        console.log('after check, ' + pathFiles.length + ' images');
+        if(!pathFiles[0]) return;
+        fromId(pathFiles);
+    })
+}
+
 function fromId(idArr){
     var i = idArr.length,
         _i = 0;
@@ -73,7 +87,7 @@ function fromId(idArr){
             else{
                 console.log(response.statusCode + ' error');
             }
-        }).pipe(fs.createWriteStream(config.Path + url.match(/\d+_p\d+.*(\.jpg|\.png)/)[0]));
+        }).pipe(fs.createWriteStream(config.path + url.match(/\d+_p\d+.*(\.jpg|\.png|\.gif)/)[0]));
     }
     function downloadManga(id){
         var url = 'http://www.pixiv.net/member_illust.php?mode=manga&illust_id=' + id,
@@ -128,7 +142,7 @@ function fromId(idArr){
                 else{
                     console.log(response.statusCode + ' error');
                 }
-            }).pipe(fs.createWriteStream(config.Path + url.match(/\d+_p\d+.*(\.jpg|\.png)/)[0]));
+            }).pipe(fs.createWriteStream(config.path + url.match(/\d+_p\d+.*(\.jpg|\.png)/)[0]));
         }
 
         request(options,callback)
@@ -138,3 +152,4 @@ function fromId(idArr){
 }
 
 exports.fromId = fromId;
+exports.check = check;

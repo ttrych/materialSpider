@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+%js%
+<style type="text/css">
+    body{
+        position: relative;
+        height: 100%;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        text-align:center;
+    }
+    img{
+        margin:auto;
+    }
+    #console{
+        position: fixed;
+        right: 0;
+        bottom: 0;
+    }
+    form{
+        margin-right: 50px;
+    }
+    button{
+        position: absolute;
+        right: 0;
+        bottom: 0;
+    }
+</style>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>classify</title>
+</head>
+<body>
+<img src="">
+<h3>file</h3>
+<div id="console">
+    <form id="radio"></form>
+    <button id="next">next</button>
+</div>
+</body>
+<script>
+    var page = function(){
+        public = {
+            init: function(){
+                createRadio();
+                page.updateImg();
+                page.regEvent();
+            },
+            updateImg: function(){
+                img.src = fileList[0];
+                h3.innerHTML = fileList[0];
+            },
+            regEvent: function(){
+                next.addEventListener('click',function(){
+                    page.sendType();
+                });
+                document.addEventListener('keydown',function(e){
+                    var key = e.keyCode;
+                    if(48 < key && 57 > key){
+                        input[key - 49].checked = true
+                    }
+                    if(key === 192){
+                        for(var i = 0,len = input.length;i < len;i++){
+                            input[i].checked = false
+                        }
+                    }
+                    if(key === 13){
+                        page.sendType();
+                    }
+                })
+            },
+            sendType: function(){
+                var xhr = new XMLHttpRequest(),
+                    type = Array.prototype.slice.call(input).filter(function(dom){
+                        return dom.checked
+                    })[0],
+                    url = 'type/?type=';
+                if (type) url += type.value;
+                url += ('&file=' + fileList[0]);
+                xhr.open('GET',url,true);
+                xhr.send();
+                fileList.shift();
+                page.updateImg();
+            }
+        };
+
+        var radio = document.getElementById('radio'),
+            img = document.getElementsByTagName('img')[0],
+            next = document.getElementsByTagName('button')[0],
+            h3 = document.getElementsByTagName('h3')[0],
+            input = document.getElementsByTagName('input');
+
+        function createRadio(){
+            var leng = type.length,
+                inHtml = '';
+            for(var i = 0;i<leng;i++){
+                inHtml = inHtml + '<input type="radio" name = "type" value="' + type[i] + '" /> ' + type[i];
+            }
+            radio.innerHTML = inHtml
+        }
+
+        return public
+    }();
+
+    page.init();
+</script>
+</html>
